@@ -10,12 +10,12 @@
 class SceneBasic : public Scene
 {
 public:
-    SceneBasic();
+  SceneBasic();
 
-    void initScene() override;
-    void update( float t ) override;
-    void render() override;
-    void resize(int, int) override;
+  void initScene() override;
+  void update(float t) override;
+  void render() override;
+  void resize(int, int) override;
 
 private:
   GLSLProgram prog;

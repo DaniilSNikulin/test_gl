@@ -1,29 +1,34 @@
 #include "scene.hpp"
 #include "scenebasic.hpp"
+#include "sceneads.hpp"
 #include "glutils.hpp"
 
-#define GLEW_STATIC
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 #include <cstdio>
 #include <iostream>
 
 // Function prototypes
-GLFWwindow* init();
+GLFWwindow* init(int, int);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 int main()
 {
-  GLFWwindow* window = init();
+  const int width = 800;
+  const int height = 600;
+  GLFWwindow* window = init(width, height);
 	if (!window) {
 		return -1;
 	}
 
-  Scene * scene = new SceneBasic();
+  Scene * scene = new SceneADS();
   GLUtils::dumpGLInfo();
   glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+  glDebugMessageCallback(GLUtils::debugCallback, NULL);
+  glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+  glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_MARKER, 0,
+                       GL_DEBUG_SEVERITY_NOTIFICATION, -1, "Start debugging");
   scene->initScene();
+  scene->resize(width, height);
   
   while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
   {
@@ -33,10 +38,13 @@ int main()
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
+
+  glfwTerminate();
+  return 0;
 }
 
 
-GLFWwindow* init()
+GLFWwindow* init(int width, int height)
 {
 	if (!glfwInit()) {
 		std::cerr << "bad init glfw\n!";
@@ -52,10 +60,10 @@ GLFWwindow* init()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-	glfwWindowHint(GLFW_DEPTH_BITS, 16);
+//	glfwWindowHint(GLFW_DEPTH_BITS, 16);
 
-	std::string title = "Chapter 01 -- ";
-	GLFWwindow* window = glfwCreateWindow(500, 500, title.c_str(), NULL, NULL);
+	std::string title = "Chapter 02 -- ";
+	GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);

@@ -81,8 +81,8 @@ void SceneBasic::compileAndLinkShader()
 {
   using namespace std;
   try {
-    prog.compileShader("basic.vert");
-    prog.compileShader("basic.frag");
+    prog.compileShader("shader/basic.vert");
+    prog.compileShader("shader/basic.frag");
     prog.link();
     prog.use();
   }
