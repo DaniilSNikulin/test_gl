@@ -6,10 +6,18 @@
 #include <GLFW/glfw3.h>
 #include <cstdio>
 #include <iostream>
+#include <memory>
+
+
+std::unique_ptr<Scene> scene;
 
 // Function prototypes
 GLFWwindow* init(int, int);
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+  scene->key_callback(window, key, scancode, action, mode);
+}
+
 
 int main()
 {
@@ -20,13 +28,13 @@ int main()
 		return -1;
 	}
 
-  Scene * scene = new SceneADS();
+  scene.reset(new SceneADS());
   GLUtils::dumpGLInfo();
-  glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-  glDebugMessageCallback(GLUtils::debugCallback, NULL);
-  glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
-  glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_MARKER, 0,
-                       GL_DEBUG_SEVERITY_NOTIFICATION, -1, "Start debugging");
+  glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+  //glDebugMessageCallback(GLUtils::debugCallback, NULL);
+  //glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+  //glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_MARKER, 0,
+  //                     GL_DEBUG_SEVERITY_NOTIFICATION, -1, "Start debugging");
   scene->initScene();
   scene->resize(width, height);
   
@@ -81,13 +89,4 @@ GLFWwindow* init(int width, int height)
 	}
 	
 	return window;
-}
-
-
-// Is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-  std::cout << key << std::endl;
-  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, GL_TRUE);
 }

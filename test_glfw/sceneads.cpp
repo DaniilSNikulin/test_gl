@@ -12,7 +12,10 @@ using std::endl;
 #include <glm/gtx/transform.hpp>
 
 
-SceneADS::SceneADS() : angle(0.0f) { }
+SceneADS::SceneADS()
+  : cameraPosition(0.0f, 0.0f, 2.0f)
+  , worldLight(5.0f, 5.0f, 2.0f, 1.0f)
+{}
 
 void SceneADS::initScene()
 {
@@ -25,9 +28,7 @@ void SceneADS::initScene()
 	model = mat4(1.0f);
 	model *= glm::rotate(glm::radians(-35.0f), vec3(1.0f,0.0f,0.0f));
 	model *= glm::rotate(glm::radians(35.0f), vec3(0.0f,1.0f,0.0f));
-	view = glm::lookAt(vec3(0.0f,0.0f,2.0f), vec3(0.0f,0.0f,0.0f), vec3(0.0f,1.0f,0.0f));
 	projection = mat4(1.0f);
-	vec4 worldLight = vec4(5.0f,5.0f,2.0f,1.0f);
 
 	prog.setUniform("Material.Kd", 0.9f, 0.5f, 0.3f);
 	prog.setUniform("Light.Ld", 1.0f, 1.0f, 1.0f);
@@ -46,21 +47,40 @@ void SceneADS::render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	model = mat4(1.0f);
-	model *= glm::rotate(glm::radians(angle), vec3(0.0f,1.0f,0.0f));
-	model *= glm::rotate(glm::radians(-35.0f), vec3(1.0f,0.0f,0.0f));
-	model *= glm::rotate(glm::radians(35.0f), vec3(0.0f,1.0f,0.0f));
-
+  view = glm::lookAt(cameraPosition, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+  
 	setMatrices();
 	torus->render();
 }
+
+void SceneADS::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+  printf("key code = %d (%c)\n", key, (char)key);
+  if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
+    glfwSetWindowShouldClose(window, GL_TRUE);
+  else if (key == GLFW_KEY_H )
+    cameraPosition = glm::rotate(glm::radians(-5.f), vec3(0.f, 1.f, 0.f)) * vec4(cameraPosition, 1.0);
+  else if (key == GLFW_KEY_L)
+    cameraPosition = glm::rotate(glm::radians(5.f), vec3(0.f, 1.f, 0.f)) * vec4(cameraPosition, 1.0);
+  else if (key == GLFW_KEY_J)
+    cameraPosition = glm::rotate(glm::radians(-5.f), vec3(1.f, 0.f, 0.f)) * vec4(cameraPosition, 1.0);
+  else if (key == GLFW_KEY_K)
+    cameraPosition = glm::rotate(glm::radians(5.f), vec3(1.f, 0.f, 0.f)) * vec4(cameraPosition, 1.0);
+  else if (key == GLFW_KEY_UP)
+    cameraPosition *= 0.95;
+  else if (key == GLFW_KEY_DOWN)
+    cameraPosition *= 1.05;
+}
+
+
 
 void SceneADS::setMatrices()
 {
 	mat4 mv = view * model;
 	prog.setUniform("ModelViewMatrix", mv);
-	prog.setUniform("NormalMatrix",
-	                mat3( vec3(mv[0]), vec3(mv[1]), vec3(mv[2]) ));
+	prog.setUniform("NormalMatrix", mat3( vec3(mv[0]), vec3(mv[1]), vec3(mv[2]) ));
 	prog.setUniform("MVP", projection * mv);
+  prog.setUniform("Light.Position", view * worldLight);
 }
 
 void SceneADS::resize(int w, int h)
