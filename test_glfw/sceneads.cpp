@@ -22,13 +22,11 @@ void SceneADS::initScene()
 	compileAndLinkShader();
 
 	glEnable(GL_DEPTH_TEST);
-
 	torus = new VBOTorus(0.7f, 0.3f, 50, 50);
 
 	model = mat4(1.0f);
-	model *= glm::rotate(glm::radians(-35.0f), vec3(1.0f,0.0f,0.0f));
-	model *= glm::rotate(glm::radians(35.0f), vec3(0.0f,1.0f,0.0f));
 	projection = mat4(1.0f);
+  view = glm::lookAt(cameraPosition, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	prog.setUniform("Material.Kd", 0.9f, 0.5f, 0.3f);
 	prog.setUniform("Light.Ld", 1.0f, 1.0f, 1.0f);
@@ -71,7 +69,6 @@ void SceneADS::key_callback(GLFWwindow* window, int key, int scancode, int actio
   else if (key == GLFW_KEY_DOWN)
     cameraPosition *= 1.05;
 }
-
 
 
 void SceneADS::setMatrices()

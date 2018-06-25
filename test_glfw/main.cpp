@@ -1,6 +1,7 @@
 #include "scene.hpp"
 #include "scenebasic.hpp"
 #include "sceneads.hpp"
+#include "sceneshadowmap.hpp"
 #include "glutils.hpp"
 
 #include <GLFW/glfw3.h>
@@ -10,8 +11,6 @@
 
 
 std::unique_ptr<Scene> scene;
-
-// Function prototypes
 GLFWwindow* init(int, int);
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
@@ -28,7 +27,7 @@ int main()
 		return -1;
 	}
 
-  scene.reset(new SceneADS());
+  scene.reset(new SceneShadowMap());
   GLUtils::dumpGLInfo();
   glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
   //glDebugMessageCallback(GLUtils::debugCallback, NULL);

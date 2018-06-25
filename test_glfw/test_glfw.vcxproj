@@ -11,11 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="frustum.cpp" />
     <ClCompile Include="glslprogram.cpp" />
     <ClCompile Include="glutils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sceneads.cpp" />
     <ClCompile Include="scenebasic.cpp" />
+    <ClCompile Include="sceneshadowmap.cpp" />
     <ClCompile Include="vbo\vbocube.cpp" />
     <ClCompile Include="vbo\vbomesh.cpp" />
     <ClCompile Include="vbo\vbomeshadj.cpp" />
@@ -26,11 +28,13 @@
     <ClCompile Include="vbo\vbotorus.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="frustum.hpp" />
     <ClInclude Include="glslprogram.hpp" />
     <ClInclude Include="glutils.hpp" />
     <ClInclude Include="scene.hpp" />
     <ClInclude Include="sceneads.hpp" />
     <ClInclude Include="scenebasic.hpp" />
+    <ClInclude Include="sceneshadowmap.hpp" />
     <ClInclude Include="vbo\drawable.hpp" />
     <ClInclude Include="vbo\teapotdata.hpp" />
     <ClInclude Include="vbo\vbocube.hpp" />
@@ -49,6 +53,8 @@
     <None Include="shaders\function.vert" />
     <None Include="shaders\phong.frag" />
     <None Include="shaders\phong.vert" />
+    <None Include="shader\shadowmap.frag" />
+    <None Include="shader\shadowmap.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B9B489B3-FCE5-403F-AED6-5733207F24B7}</ProjectGuid>

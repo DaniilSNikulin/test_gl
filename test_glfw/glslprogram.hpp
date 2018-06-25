@@ -43,6 +43,7 @@ public:
   GLSLProgram & operator=(GLSLProgram &&) = delete;
 
   void   compileShader(const char *fileName);
+  void compileShader(const char * fileName, GLSLShaderType type);
 
   void   link();
   void   validate();
@@ -74,7 +75,6 @@ private:
   bool linked;
   std::map<string, int> uniformLocations;
 
-  void compileShader(const char * fileName, GLSLShaderType type);
   void compileShader(const string & source, GLSLShaderType type,
                      const char *fileName = nullptr);
 
