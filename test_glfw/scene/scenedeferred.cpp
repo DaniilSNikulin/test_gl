@@ -145,28 +145,28 @@ void SceneDeferred::render()
 {
   pass1();
 
-  static int cnt = 0;
-  cnt++;
-  if (cnt == 10) {
-    int size = width * height;
-    printf("%d, %d\n", width, height);
-    float * buffer = new float[size * 3];
-    glBindFramebuffer(GL_FRAMEBUFFER, deferredFBO);
-    glBindTexture(GL_TEXTURE_2D, posTex);
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_FLOAT, buffer);
-
-    FILE * pFile = fopen("myfile.csv", "w");
-    fprintf(pFile, "x,y,z\n");
-    for (int i = 0; i < size; ++i) {
-      float x = buffer[3 * i];
-      float y = buffer[3 * i + 1];
-      float z = buffer[3 * i + 2];
-      if (!eq(x, 0.3) || !eq(y, 0.3) || !eq(z, 0.3)) {
-//        fprintf(pFile, "%7.3f, %7.3f, %7.3f\n", x, y, z);
-      }
-    }
-    fclose(pFile);
-  }
+//  static int cnt = 0;
+//  cnt++;
+//  if (cnt == 10) {
+//    int size = width * height;
+//    printf("%d, %d\n", width, height);
+//    float * buffer = new float[size * 3];
+//    glBindFramebuffer(GL_FRAMEBUFFER, deferredFBO);
+//    glBindTexture(GL_TEXTURE_2D, posTex);
+//    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_FLOAT, buffer);
+//
+//    FILE * pFile = fopen("myfile.csv", "w");
+//    fprintf(pFile, "x,y,z\n");
+//    for (int i = 0; i < size; ++i) {
+//      float x = buffer[3 * i];
+//      float y = buffer[3 * i + 1];
+//      float z = buffer[3 * i + 2];
+//      if (!eq(x, 0.3) || !eq(y, 0.3) || !eq(z, 0.3)) {
+////        fprintf(pFile, "%7.3f, %7.3f, %7.3f\n", x, y, z);
+//      }
+//    }
+//    fclose(pFile);
+//  }
 
   pass2();
 }

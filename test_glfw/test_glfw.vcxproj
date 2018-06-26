@@ -97,13 +97,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\Projects\GL\SimLabs\GLFW\include;C:\glm;D:\Projects\GL\SimLabs\glew-2.1.0\include;D:\Projects\GL\SimLabs\basic\test_glfw\test_glfw;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Projects\GL\SimLabs\GLFW\lib-vc2013;D:\Projects\GL\SimLabs\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\include;.\;C:\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Projects\GL\SimLabs\GLFW\include;C:\glm;D:\Projects\GL\SimLabs\glew-2.1.0\include;D:\Projects\GL\SimLabs\basic\test_glfw\test_glfw;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Projects\GL\SimLabs\GLFW\lib-vc2013;D:\Projects\GL\SimLabs\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\include;.\;C:\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
