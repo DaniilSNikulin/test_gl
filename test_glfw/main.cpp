@@ -1,7 +1,10 @@
-#include "scene.hpp"
-#include "scenebasic.hpp"
-#include "sceneads.hpp"
-#include "sceneshadowmap.hpp"
+#include "scene/scene.hpp"
+#include "scene/scenebasic.hpp"
+#include "scene/sceneads.hpp"
+#include "scene/sceneshadowmap.hpp"
+#include "scene/scenedeferred.hpp"
+#include "scene/scenepoints.hpp"
+#include "scene/scenetwoview.hpp"
 #include "glutils.hpp"
 
 #include <GLFW/glfw3.h>
@@ -27,15 +30,15 @@ int main()
 		return -1;
 	}
 
-  scene.reset(new SceneShadowMap());
+  scene.reset(new SceneTwoView());
   GLUtils::dumpGLInfo();
-  glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+  glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
   //glDebugMessageCallback(GLUtils::debugCallback, NULL);
   //glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
   //glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_MARKER, 0,
   //                     GL_DEBUG_SEVERITY_NOTIFICATION, -1, "Start debugging");
   scene->initScene();
-  scene->resize(width, height);
+//  scene->resize(width, height);
   
   while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE))
   {

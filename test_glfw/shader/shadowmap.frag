@@ -1,4 +1,4 @@
-#version 400
+#version 420
 
 uniform struct LightInfo {
     vec4 Position;
@@ -12,7 +12,7 @@ uniform struct MaterialInfo {
     float Shininess;
 } Material;
 
-uniform sampler2DShadow ShadowMap;
+layout(binding = 0) uniform sampler2DShadow ShadowMap;
 
 in vec3 Position;
 in vec3 Normal;

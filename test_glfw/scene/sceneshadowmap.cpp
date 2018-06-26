@@ -96,7 +96,7 @@ void SceneShadowMap::render()
 }
 
 
-vec3 up_down_translate(vec3 pos, float degree) {
+static vec3 up_down_translate(vec3 pos, float degree) {
   static float back(1);
   float length = glm::length(pos);
   vec3 polarPos= glm::polar(pos);
@@ -132,7 +132,6 @@ void SceneShadowMap::key_callback(GLFWwindow* window, int key, int scancode, int
     pos *= 1.05;
   else if (key == GLFW_KEY_C && action == GLFW_PRESS)
     actor = static_cast<ActorType>((static_cast<int>(actor)+1) % 2);
-  printf("%d\n", (int)actor);
 }
 
 
