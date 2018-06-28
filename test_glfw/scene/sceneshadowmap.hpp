@@ -17,8 +17,8 @@ using glm::vec3;
 
 
 enum class ActorType {
-  LIGHT = 0,
-  CAMERA = 1
+  PUBLISHER = 0,
+  SUBSCRIBER = 1
 };
 
 
@@ -46,6 +46,7 @@ private:
 
   vec3 lightPos;
   vec3 cameraPos;
+  vec3 viewerPos;
   ActorType actor;
 
   mat4 model, view, projection;

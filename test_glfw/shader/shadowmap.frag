@@ -1,5 +1,6 @@
 #version 420
 
+uniform vec4 ViewerPosition;
 uniform struct LightInfo {
     vec4 Position;
     vec3 Intensity;
@@ -23,7 +24,7 @@ layout (location = 0) out vec4 FragColor;
 vec3 phongModelDiffAndSpec()
 {
     vec3 n = Normal;
-    if( !gl_FrontFacing ) n = -n;
+//    if( !gl_FrontFacing ) n = -n;
     vec3 s = normalize(vec3(Light.Position) - Position);
     vec3 v = normalize(-Position.xyz);
     vec3 r = reflect( -s, n );
@@ -33,6 +34,11 @@ vec3 phongModelDiffAndSpec()
     if( sDotN > 0.0 )
         spec = Light.Intensity * Material.Ks *
             pow( max( dot(r,v), 0.0 ), Material.Shininess );
+
+    vec3 sw = normalize(vec3(ViewerPosition) - Position);
+    float swDotN = dot(sw,n);
+    if (swDotN <= 0.0)
+        discard;
 
     return diffuse + spec;
 }
@@ -47,6 +53,9 @@ void shadeWithShadow()
     vec3 diffAndSpec = phongModelDiffAndSpec();
 
     float shadow = textureProj(ShadowMap, ShadowCoord);
+    if (shadow < 0.5) {
+        discard;
+    }
 
     // If the fragment is in shadow, use ambient light only.
     FragColor = vec4(diffAndSpec * shadow + ambient, 1.0);

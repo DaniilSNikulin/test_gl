@@ -30,7 +30,7 @@ int main()
 		return -1;
 	}
 
-  scene.reset(new SceneTwoView());
+  scene.reset(new SceneShadowMap());
   GLUtils::dumpGLInfo();
   glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
   //glDebugMessageCallback(GLUtils::debugCallback, NULL);

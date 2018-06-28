@@ -19,9 +19,10 @@ SceneShadowMap::SceneShadowMap()
  , height(600)
  , shadowMapWidth(512)
  , shadowMapHeight(512)
- , lightPos(0.0f, 1.65*6.25f, 1.65*8.5f)
+ , lightPos(1.0f, 8.25f, 12.5f)
  , cameraPos(11.5f, 7.0f, .0f)
- , actor(ActorType::CAMERA)
+ , viewerPos(0.0f, 1.65*6.25f, 1.65*8.5f)
+ , actor(ActorType::SUBSCRIBER)
 {}
 
 
@@ -65,12 +66,13 @@ void SceneShadowMap::render()
 {
   lightFrustum->orient(lightPos, vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
   lightFrustum->setPerspective(50.0f, 1.0f, 1.0f, 50.0f);
-  lightPV = shadowBias * lightFrustum->getProjectionMatrix() * lightFrustum->getViewMatrix();
+
+  view = glm::lookAt(viewerPos, vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
+  projection = glm::perspective(glm::radians(50.0f), (float)width / height, 0.1f, 100.0f);
+  lightPV = shadowBias * projection * view;
 
   prog.use();
   // Pass 1 (shadow map generation)
-  view = lightFrustum->getViewMatrix();
-  projection = lightFrustum->getProjectionMatrix();
   glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
   glClear(GL_DEPTH_BUFFER_BIT);
   glViewport(0, 0, shadowMapWidth, shadowMapHeight);
@@ -85,6 +87,7 @@ void SceneShadowMap::render()
   // Pass 2 (render)
   view = glm::lookAt(cameraPos, vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
   prog.setUniform("Light.Position", view * vec4(lightFrustum->getOrigin(), 1.0f));
+  prog.setUniform("ViewerPosition", view * vec4(viewerPos, 1.0f));
   projection = glm::perspective(glm::radians(50.0f), (float)width / height, 0.1f, 100.0f);
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -114,8 +117,8 @@ static vec3 up_down_translate(vec3 pos, float degree) {
 
 void SceneShadowMap::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-  printf("key code = %d (%c)\n", key, (char)key);
-  vec3 & pos = actor == ActorType::CAMERA ? cameraPos : lightPos;
+//  printf("key code = %d (%c)\n", key, (char)key);
+  vec3 & pos = actor == ActorType::SUBSCRIBER ? cameraPos : viewerPos;
   if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
     glfwSetWindowShouldClose(window, GL_TRUE);
   else if (key == GLFW_KEY_H)
@@ -146,7 +149,7 @@ void SceneShadowMap::drawScene()
   prog.setUniform("Material.Ks", vec3(0.9f, 0.9f, 0.9f));
   prog.setUniform("Material.Shininess", 150.0f);
   model = mat4(1.0f);
-  model *= glm::translate(vec3(-2.0f, 0.0f, 0.0f));
+  model *= glm::translate(vec3(0.0f, 0.0f, 0.0f));
   model *= glm::rotate(glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
   setMatrices();
   teapot->render();
@@ -157,8 +160,8 @@ void SceneShadowMap::drawScene()
   prog.setUniform("Material.Ks", vec3(0.9f, 0.9f, 0.9f));
   prog.setUniform("Material.Shininess", 150.0f);
   model = mat4(1.0f);
-  model *= glm::translate(vec3(0.0f, 2.0f, 5.0f));
-  model *= glm::rotate(glm::radians(-45.0f), vec3(1.0f, 0.0f, 0.0f));
+  model *= glm::translate(vec3(1.0f, 1.0f, 3.0f));
+  model *= glm::rotate(glm::radians(90.0f), vec3(1.0f, 0.0f, 0.0f));
   setMatrices();
   torus->render();
 
@@ -169,7 +172,7 @@ void SceneShadowMap::drawScene()
   model = mat4(1.0f);
   model *= glm::translate(vec3(0.0f, 0.0f, 0.0f));
   setMatrices();
-  plane->render();
+//  plane->render();
 }
 
 
